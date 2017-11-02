@@ -11,5 +11,5 @@ Start from branch `solution/step2`, solution is in branch `solution/step3`.
  - `filter`
  - `take`
  - `flatMap` to asynchronously retrieve additional data needed for filter
- - 'ADDED' this to my repository.
+ 
  
