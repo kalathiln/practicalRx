@@ -22,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import rx.Observable;
+
 @RestController
 @RequestMapping(value = "/admin", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AdminController {
@@ -73,7 +75,7 @@ public class AdminController {
 
     @RequestMapping("/cost/{year}/{month}")
     protected Map<String, Object> cost(@PathVariable int year, @PathVariable Month month) {
-        BigInteger cost = adminService.costForMonth(year, month);
+        Observable<BigInteger> cost = adminService.costForMonth(year, month);
 
         Map<String, Object> json = new HashMap<>();
         json.put("month", month + " " + year);
