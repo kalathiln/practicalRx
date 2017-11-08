@@ -3,7 +3,7 @@ package org.dogepool.practicalrx.services;
 import java.math.BigInteger;
 import java.time.LocalDate;
 import java.time.Month;
-//import io.reactivex.Observable;
+import io.reactivex.Observable;
 import rx.*;
 
 
@@ -36,17 +36,17 @@ public class AdminService {
 	 * 
 	 */
     
-	public rx.Observable<BigInteger> costForMonth(int year, Month month) {
+	public Observable<BigInteger> costForMonth(int year, Month month) {
         LocalDate now = LocalDate.now();
 
         if (year == now.getYear() && month == now.getMonth()) {
-            return rx.Observable.just(BigInteger.ZERO);
+            return Observable.just(BigInteger.ZERO);
         }
         if (year > now.getYear()
             || year == now.getYear() && month.getValue() > now.getMonthValue()) {
-            return rx.Observable.just(BigInteger.ZERO);
+            return Observable.just(BigInteger.ZERO);
         }
-        return rx.Observable.just(month.getValue())
+        return Observable.just(month.getValue())
         		.map(v -> year + v * 100)
         		.map(integer -> BigInteger.valueOf(integer));
     }
