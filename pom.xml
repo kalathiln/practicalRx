@@ -47,9 +47,13 @@
     <dependency>
       <groupId>io.reactivex</groupId>
       <artifactId>rxjava</artifactId>
-      <version>1.0.15</version>
     </dependency>
-
+	<!-- https://mvnrepository.com/artifact/io.reactivex.rxjava2/rxjava -->
+	<dependency>
+	    <groupId>io.reactivex.rxjava2</groupId>
+	    <artifactId>rxjava</artifactId>
+	    <version>2.1.6</version>
+	</dependency>
     <!-- Storage -->
     <dependency>
       <groupId>com.couchbase.client</groupId>
@@ -76,4 +80,13 @@
 
   </dependencies>
 
+  <dependencyManagement>
+  	<dependencies>
+  		<dependency>
+  			<groupId>io.reactivex</groupId>
+  			<artifactId>rxjava</artifactId>
+  			<version>1.2.2</version>
+  		</dependency>
+  	</dependencies>
+  </dependencyManagement>
 </project>
