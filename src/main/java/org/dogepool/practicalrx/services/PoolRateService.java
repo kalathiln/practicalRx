@@ -18,7 +18,7 @@ public class PoolRateService {
 
     public double poolGigaHashrate() {
         double hashrate = 0d;
-        for (User u : poolService.miningUsers()) {
+        for (User u : poolService.miningUsers().) {
             double userRate = hashrateService.hashrateFor(u);
             hashrate += userRate;
         }

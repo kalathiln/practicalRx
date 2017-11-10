@@ -11,6 +11,7 @@ import org.dogepool.practicalrx.views.models.IndexModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+//import io.reactivex.*;
 
 /**
  * A utility controller that displays the welcome message as HTML on root endpoint.
@@ -34,10 +35,13 @@ public class IndexController {
     public String index(Map<String, Object> model) {
         //prepare a model
         IndexModel idxModel = new IndexModel();
-        idxModel.setHashLadder(rankService.getLadderByHashrate());
+        idxModel.setHashLadder(rankService.getLadderByHashrate() );
         idxModel.setCoinsLadder(rankService.getLadderByCoins());
         idxModel.setPoolName(poolService.poolName());
-        idxModel.setMiningUserCount(poolService.miningUsers().size());
+        /* Here we must modify the code in order to reflect the changes done for the miningservice() method
+         * in poolService.
+         */
+        idxModel.setMiningUserCount(poolService.miningUsers().count().toBlocking().single());
         idxModel.setGigaHashrate(poolRateService.poolGigaHashrate());
         try {
             Double dogeToDollar = exchangeRateService.dogeToCurrencyExchangeRate("USD");
