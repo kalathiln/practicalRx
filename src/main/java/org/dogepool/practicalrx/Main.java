@@ -2,6 +2,7 @@ package org.dogepool.practicalrx;
 
 import java.io.File;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 import com.couchbase.client.java.Bucket;
 import com.couchbase.client.java.document.JsonDocument;
@@ -65,13 +66,21 @@ public class Main {
         return args -> {
             User user = userService.getUser(0);
             //connect USER automatically
-            boolean connected = poolService.connectUser(user);
+//            boolean connected = poolService.connectUser(user); Changed to rxJava
+            /*
+             * Here we add toBlocking().first() in order to block the input stream and to get just the first event as the output.
+             */
+            boolean connected = poolService.connectUser(user).toBlocking().first();
 
             //gather data
             List<UserStat> hashLadder = rankinService.getLadderByHashrate();
             List<UserStat> coinsLadder = rankinService.getLadderByCoins();
             String poolName = poolService.poolName();
-            int miningUserCount = poolService.miningUsers().size();
+//            int miningUserCount = poolService.miningUsers().size(); Changed to rx
+            /*
+             * Returns an Observable that emits the count of the total number of items emitted by the source Observable.
+             */
+            int miningUserCount = poolService.miningUsers().count().toBlocking().first();
             double poolRate = poolRateService.poolGigaHashrate();
 
             //display welcome screen in console

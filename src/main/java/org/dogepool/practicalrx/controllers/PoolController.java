@@ -65,7 +65,8 @@ public class PoolController {
     @RequestMapping("/miners")
     public Map<String, Object> miners() {
         int allUsers = userService.findAll().size();
-        int miningUsers = poolService.miningUsers().size();
+//        int miningUsers = poolService.miningUsers().size();
+        int miningUsers = poolService.miningUsers().count().toBlocking().single();
         Map<String, Object> json = new HashMap<>(2);
         json.put("totalUsers", allUsers);
         json.put("totalMiningUsers", miningUsers);
@@ -74,7 +75,8 @@ public class PoolController {
 
     @RequestMapping("/miners/active")
     public List<User> activeMiners() {
-        return poolService.miningUsers();
+//        return poolService.miningUsers(); 
+        return poolService.miningUsers().toList().toBlocking().first();
     }
 
     @RequestMapping("/lastblock")
