@@ -77,11 +77,12 @@ public class Main {
             List<UserStat> coinsLadder = rankinService.getLadderByCoins();
             String poolName = poolService.poolName();
 //            int miningUserCount = poolService.miningUsers().size(); Changed to rx
+//            double poolRate = poolRateService.poolGigaHashrate();
             /*
              * Returns an Observable that emits the count of the total number of items emitted by the source Observable.
              */
             int miningUserCount = poolService.miningUsers().count().toBlocking().first();
-            double poolRate = poolRateService.poolGigaHashrate();
+            double poolRate = poolRateService.poolGigaHashrate().toBlocking().first();
 
             //display welcome screen in console
             System.out.println("Welcome to " + poolName + " dogecoin mining pool!");
