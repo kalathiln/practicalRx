@@ -40,8 +40,10 @@ public class AdminController {
     public ResponseEntity<Object> registerMiningUser(@PathVariable("id") long id) {
         User user = userService.getUser(id);
         if (user != null) {
-            boolean connected = poolService.connectUser(user);
-            List<User> miningUsers = poolService.miningUsers();
+//            boolean connected = poolService.connectUser(user);		*** Added Rx ***
+        	boolean connected = poolService.connectUser(user).toBlocking().first();
+//            List<User> miningUsers = poolService.miningUsers(); 	*** Added Rx ***
+        	List<User> miningUsers = poolService.miningUsers().toList().toBlocking().first();
             return new ResponseEntity<>(miningUsers, HttpStatus.ACCEPTED);
         } else {
             throw new DogePoolException("User cannot mine, not authenticated", Error.BAD_USER, HttpStatus.NOT_FOUND);
@@ -52,8 +54,10 @@ public class AdminController {
     public ResponseEntity<Object> deregisterMiningUser(@PathVariable("id") long id) {
         User user = userService.getUser(id);
         if (user != null) {
-            boolean disconnected = poolService.disconnectUser(user);
-            List<User> miningUsers = poolService.miningUsers();
+//            boolean disconnected = poolService.disconnectUser(user);	*** Added Rx ***
+        	boolean disconnected = poolService.disconnectUser(user).toBlocking().first();
+//            List<User> miningUsers = poolService.miningUsers();		*** Added Rx ***
+            List<User> miningUsers = poolService.miningUsers().toList().toBlocking().first();
             return new ResponseEntity<>(miningUsers, HttpStatus.ACCEPTED);
         } else {
             throw new DogePoolException("User is not mining, not authenticated", Error.BAD_USER, HttpStatus.NOT_FOUND);
@@ -74,7 +78,9 @@ public class AdminController {
 
     @RequestMapping("/cost/{year}/{month}")
     protected Map<String, Object> cost(@PathVariable int year, @PathVariable Month month) {
-        Observable<BigInteger> cost = adminService.costForMonth(year, month);
+//    		BigInteger cost = adminService.costForMonth(year, month); *** Added Rx ***
+//    	Observable<BigInteger> cost = adminService.costForMonth(year,month);		This code also works
+    	BigInteger cost = adminService.costForMonth(year, month).toBlocking().first();
 
         Map<String, Object> json = new HashMap<>();
         json.put("month", month + " " + year);

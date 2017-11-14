@@ -42,7 +42,7 @@ public class IndexController {
          * in poolService.
          */
         idxModel.setMiningUserCount(poolService.miningUsers().count().toBlocking().single());
-        idxModel.setGigaHashrate(poolRateService.poolGigaHashrate());
+        idxModel.setGigaHashrate(poolRateService.poolGigaHashrate().toBlocking().single());
         try {
             Double dogeToDollar = exchangeRateService.dogeToCurrencyExchangeRate("USD");
             idxModel.setDogeToUsdMessage("1 DOGE = " + dogeToDollar + "$");
