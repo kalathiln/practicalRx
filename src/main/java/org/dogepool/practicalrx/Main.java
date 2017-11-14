@@ -64,13 +64,16 @@ public class Main {
     CommandLineRunner commandLineRunner(UserService userService, RankingService rankinService,
             PoolService poolService, PoolRateService poolRateService, ExchangeRateService exchangeRateService) {
         return args -> {
-            User user = userService.getUser(0);
+//            User user = userService.getUser(0);
             //connect USER automatically
 //            boolean connected = poolService.connectUser(user); Changed to rxJava
             /*
              * Here we add toBlocking().first() in order to block the input stream and to get just the first event as the output.
              */
-            boolean connected = poolService.connectUser(user).toBlocking().first();
+//        		boolean connected = poolService.connectUser(user).toBlocking().first();
+        		boolean connected = userService.getUser(0)
+        				.flatMap(u -> poolService.connectUser(u))
+        				.toBlocking().single();
 
             //gather data
             List<UserStat> hashLadder = rankinService.getLadderByHashrate();

@@ -12,6 +12,9 @@ import com.couchbase.client.java.query.N1qlQueryResult;
 import com.couchbase.client.java.query.N1qlQueryRow;
 import com.couchbase.client.java.query.Select;
 import com.couchbase.client.java.query.Statement;
+
+import rx.Observable;
+
 import org.dogepool.practicalrx.domain.User;
 import org.dogepool.practicalrx.error.DogePoolException;
 import org.dogepool.practicalrx.error.Error;
@@ -33,27 +36,57 @@ public class UserService {
     @Value("${store.enableFindAll:false}")
     private boolean useCouchbaseForFindAll;
 
-    public User getUser(long id) {
-        for (User user : findAll()) {
-            if (user.id == id) {
-                return user;
-            }
+//    public User getUser(long id) {
+//        for (User user : findAll()) {
+//            if (user.id == id) {
+//                return user;
+//            }
+//        }
+//
+//        return null; //TODO any better way of doing this in Java 8?
+//    }
+    
+    public Observable<User> getUser(long id) {
+    		return findAll()
+    				.filter(u -> u.id == id)
+    				.take(1);
         }
 
-        return null; //TODO any better way of doing this in Java 8?
+//    public User getUserByLogin(String login) {
+//        for (User user : findAll()) {
+//            if (login.equals(user.nickname)) {
+//                return user;
+//            }
+//        }
+//
+//        return null; //TODO any better way of doing this in Java 8?
+//    }
+    public Observable<User> getUserByLogin(String login) {
+    		return findAll()
+    				.filter(u -> u.nickname == login)
+    				.take(1);
     }
 
-    public User getUserByLogin(String login) {
-        for (User user : findAll()) {
-            if (login.equals(user.nickname)) {
-                return user;
-            }
-        }
-
-        return null; //TODO any better way of doing this in Java 8?
-    }
-
-    public List<User> findAll() {
+//    public Observable<User> findAll() {
+//        if (useCouchbaseForFindAll && couchbaseBucket != null) {
+//            try {
+//                Statement statement = Select.select("avatarId", "bio", "displayName", "id", "nickname").from(x("default"))
+//                                            .where(x("type").eq(s("user"))).groupBy(x("displayName"));
+//                N1qlQueryResult queryResult = couchbaseBucket.query(statement);
+//                List<User> users = new ArrayList<User>();
+//                for (N1qlQueryRow qr : queryResult) {
+//                    users.add(User.fromJsonObject(qr.value()));
+//                }
+//                return users;
+//            } catch (Exception e) {
+//                throw new DogePoolException("Error while getting list of users from database",
+//                        Error.DATABASE, HttpStatus.INTERNAL_SERVER_ERROR, e);
+//            }
+//        } else {
+//            return Arrays.asList(User.USER, User.OTHERUSER);
+//        }
+//    }
+    public Observable<User> findAll() {
         if (useCouchbaseForFindAll && couchbaseBucket != null) {
             try {
                 Statement statement = Select.select("avatarId", "bio", "displayName", "id", "nickname").from(x("default"))
@@ -63,13 +96,15 @@ public class UserService {
                 for (N1qlQueryRow qr : queryResult) {
                     users.add(User.fromJsonObject(qr.value()));
                 }
-                return users;
+//                return users;
+                return Observable.from(users);
             } catch (Exception e) {
                 throw new DogePoolException("Error while getting list of users from database",
                         Error.DATABASE, HttpStatus.INTERNAL_SERVER_ERROR, e);
             }
         } else {
-            return Arrays.asList(User.USER, User.OTHERUSER);
+//            return Arrays.asList(User.USER, User.OTHERUSER);
+        	return Observable.just(User.USER, User.OTHERUSER);
         }
     }
 }
