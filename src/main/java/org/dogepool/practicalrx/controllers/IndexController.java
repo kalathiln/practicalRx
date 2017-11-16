@@ -35,8 +35,8 @@ public class IndexController {
     public String index(Map<String, Object> model) {
         //prepare a model
         IndexModel idxModel = new IndexModel();
-        idxModel.setHashLadder(rankService.getLadderByHashrate() );
-        idxModel.setCoinsLadder(rankService.getLadderByCoins());
+        idxModel.setHashLadder(rankService.getLadderByHashrate().toList().toBlocking().single());
+        idxModel.setCoinsLadder(rankService.getLadderByCoins().toList().toBlocking().single());
         idxModel.setPoolName(poolService.poolName());
         /* Here we must modify the code in order to reflect the changes done for the miningservice() method
          * in poolService.

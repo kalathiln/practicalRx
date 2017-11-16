@@ -59,8 +59,8 @@ public class UserProfileController {
 
                 //complete with other information
                 double hash = hashrateService.hashrateFor(user).toBlocking().single();
-                long rankByHash = rankingService.rankByHashrate(user);
-                long rankByCoins = rankingService.rankByCoins(user);
+                long rankByHash = rankingService.rankByHashrate(user).toBlocking().single();
+                long rankByCoins = rankingService.rankByCoins(user).toBlocking().single();
 //                long coins = coinService.totalCoinsMinedBy(user);
                 long coins = coinService.totalCoinsMinedBy(user).toBlocking().first();
                 
@@ -93,8 +93,8 @@ public class UserProfileController {
 
                 //complete with other information
                 double hash = hashrateService.hashrateFor(user).toBlocking().single();
-                long rankByHash = rankingService.rankByHashrate(user);
-                long rankByCoins = rankingService.rankByCoins(user);
+                long rankByHash = rankingService.rankByHashrate(user).toBlocking().single();
+                long rankByCoins = rankingService.rankByCoins(user).toBlocking().single();
 //                long coins = coinService.totalCoinsMinedBy(user); 
                 long coins = coinService.totalCoinsMinedBy(user).toBlocking().single();
 
