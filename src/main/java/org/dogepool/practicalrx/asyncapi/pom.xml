@@ -5,9 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.dogepool</groupId>
   <artifactId>practicalrx</artifactId>
-  <version>1.0</version>
- 
-  
+  <version>1.0</version> 
   <build>
     <plugins>
       <plugin>
@@ -18,6 +16,13 @@
           <target>1.8</target>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.dogepool.practicalrx.asyncapi</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <configuration>
+             <mainClass>org.dogepool.practicalrx.asyncapi.Main</mainClass>
+        </configuration>
+        </plugin>
       <plugin>
       	<groupId>
       		com.couchbase.client.java.query.N1qlQueryResult
